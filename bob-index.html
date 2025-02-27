@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bob - Life on Easy Mode</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7F5AF0;
+            --secondary: #2CB67D;
+            --accent: #FF8E3C;
+            --background: #000000;
+            --headline: #FFFFFE;
+            --paragraph: #94A1B2;
+            --button: #7F5AF0;
+            --button-text: #FFFFFE;
+            --stroke: #010101;
+            --main: #000000;
+            --highlight: #7F5AF0;
+            --tertiary: #72757E;
+            --card: #111111;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+            position: relative; /* Add this to ensure all elements have a stacking context */
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--paragraph);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--headline);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--primary);
+            margin-left: 5px;
+        }
+        
+        .cta-button {
+            background-color: var(--button);
+            color: var(--button-text);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(127, 90, 240, 0.3);
+        }
+        
+        .cta-button i {
+            margin-right: 8px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(127, 90, 240, 0.5);
+        }
+        
+        .hero {
+            padding: 180px 0 120px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .emoji-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .hero h1 {
+            font-size: 4.5rem;
+            color: var(--headline);
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        .beta-tag {
+            display: inline-block;
+            background-color: var(--accent);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(127, 90, 240, 0.2) 0%, rgba(127, 90, 240, 0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            color: var(--primary);
+            box-shadow: 0 8px 20px rgba(127, 90, 240, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            margin: 50px auto;
+        }
+        
+        .feature-item {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .feature-item h3 {
+            color: var(--headline);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .feature-item p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .example-section {
+            padding: 80px 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--headline);
+            margin-bottom: 15px;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 4px;
+            background-color: var(--primary);
+            position: absolute;
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .example-card {
+            background-color: var(--card);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--primary);
+        }
+        
+        .example-card h3 {
+            color: var(--headline);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .example-card p {
+            color: var(--paragraph);
+            font-style: italic;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .example-card .tag {
+            display: inline-block;
+            background-color: rgba(127, 90, 240, 0.1);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        .waitlist-section {
+            background-color: var(--card);
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 30px;
+            margin: 50px auto;
+            max-width: 800px;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+        
+        .waitlist-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .waitlist-section h2 {
+            font-size: 2.5rem;
+            color: var(--headline);
+            margin-bottom: 20px;
+        }
+        
+        .waitlist-section p {
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .waitlist-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .waitlist-form input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 50px 0 0 50px;
+            color: var(--headline);
+            font-size: 1rem;
+        }
+        
+        .waitlist-form input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .waitlist-form button {
+            background-color: var(--primary);
+            color: var(--button-text);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 0 50px 50px 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .waitlist-form button:hover {
+            background-color: #6a48d7;
+        }
+        
+        .floating-emoji {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.3;
+            animation: float 15s linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        footer {
+            padding: 50px 0 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--headline);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .footer-logo span {
+            color: var(--primary);
+            margin-left: 5px;
+        }
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(127, 90, 240, 0.2) 0%, rgba(127, 90, 240, 0.1) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-icon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+            color: var(--button-text);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(127, 90, 240, 0.3);
+        }
+        
+        .footer-text {
+            margin: 20px 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .waitlist-form {
+                flex-direction: column;
+            }
+            
+            .waitlist-form input {
+                border-radius: 50px;
+                margin-bottom: 10px;
+            }
+            
+            .waitlist-form button {
+                border-radius: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="emoji-bg">
+        <span class="floating-emoji" style="left: 10%; top: 15%; animation-delay: 0s;">🎮</span>
+        <span class="floating-emoji" style="left: 20%; top: 40%; animation-delay: 3s;">🌮</span>
+        <span class="floating-emoji" style="left: 30%; top: 20%; animation-delay: 7s;">🎟️</span>
+        <span class="floating-emoji" style="left: 40%; top: 60%; animation-delay: 5s;">🛍️</span>
+        <span class="floating-emoji" style="left: 60%; top: 30%; animation-delay: 8s;">🎂</span>
+        <span class="floating-emoji" style="left: 70%; top: 70%; animation-delay: 2s;">🚗</span>
+        <span class="floating-emoji" style="left: 80%; top: 50%; animation-delay: 6s;">🎁</span>
+        <span class="floating-emoji" style="left: 90%; top: 25%; animation-delay: 4s;">✨</span>
+    </div>
+    
+    <header>
+        <div class="container header-container">
+            <div class="logo">Bob<span>.</span></div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <div class="beta-tag">INVITE ONLY BETA</div>
+            <h1>Life on <span class="gradient-text">Easy Mode</span></h1>
+            <p>Your personal assistant that handles the tedious stuff so you can focus on what matters.</p>
+            <button class="cta-button"><i class="fas fa-envelope"></i> Request Access</button>
+        </div>
+    </section>
+    
+    <section class="container">
+        <div class="features">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>AI-Powered</h3>
+                <p>Smart assistance that learns your preferences</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3>Human Touch</h3>
+                <p>Real people handle your important tasks</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Life Simplified</h3>
+                <p>More time for what matters to you</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="example-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>How Bob Works</h2>
+            </div>
+            
+            <div class="examples">
+                <div class="example-card">
+                    <h3>Dining & Reservations</h3>
+                    <p>"Hey Bob, can you get me a table for 4 at a nice sushi place near Covent Garden this Friday around 7pm? Vibes should be chill but not too casual."</p>
+                    <span class="tag">Send via Telegram</span>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Event & Entertainment</h3>
+                    <p>"Bob, I need 2 tickets to see The 1975 at O2 next month. Willing to spend up to £150 each, prefer standing or good seated view."</p>
+                    <span class="tag">Send via Telegram</span>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Gift Finding</h3>
+                    <p>"I need a birthday gift for my girlfriend who's into vintage fashion, astrology, and indie music. Budget is £80. Can you find something unique that ships to London by next Tuesday?"</p>
+                    <span class="tag">Send via Telegram</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="waitlist-section">
+        <h2>Join the Waitlist</h2>
+        <p>Bob is currently in private beta. Leave your email to request access or receive an invitation from an existing member.</p>
+        <div class="waitlist-form">
+            <input type="email" placeholder="Your email address">
+            <button>Join Waitlist</button>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-logo">Bob<span>.</span></div>
+        <div class="footer-social">
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p class="footer-text">&copy; 2025 Bob. All rights reserved.</p>
+    </footer>
+</body>
+</html>
