@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bob - Life on Easy Mode</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7F5AF0;
+            --secondary: #2CB67D;
+            --accent: #FF8E3C;
+            --background: #000000;
+            --headline: #FFFFFE;
+            --paragraph: #94A1B2;
+            --button: #7F5AF0;
+            --button-text: #FFFFFE;
+            --stroke: #010101;
+            --main: #000000;
+            --highlight: #7F5AF0;
+            --tertiary: #72757E;
+            --card: #111111;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--paragraph);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--headline);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--primary);
+            margin-left: 5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--paragraph);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--button);
+            color: var(--button-text);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(127, 90, 240, 0.3);
+        }
+        
+        .cta-button i {
+            margin-right: 8px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(127, 90, 240, 0.5);
+        }
+        
+        .hero {
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--headline);
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .secondary-button {
+            background-color: transparent;
+            color: var(--headline);
+            border: 2px solid var(--primary);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .secondary-button i {
+            margin-right: 8px;
+        }
+        
+        .secondary-button:hover {
+            background-color: rgba(127, 90, 240, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-heading {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-heading h2 {
+            font-size: 2.5rem;
+            color: var(--headline);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-heading h2::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 4px;
+            background-color: var(--primary);
+            position: absolute;
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+        
+        .section-heading p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background-color: var(--card);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(127, 90, 240, 0.2);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(127, 90, 240, 0.1);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: var(--headline);
+            margin-bottom: 15px;
+        }
+        
+        .emoji-bullet {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .how-it-works {
+            background-color: var(--card);
+            border-radius: 30px;
+            padding: 80px 40px;
+            margin: 40px 0;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .step {
+            text-align: center;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: var(--button-text);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+        
+        .step h3 {
+            color: var(--headline);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .example-card {
+            background-color: var(--card);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--primary);
+        }
+        
+        .example-card h3 {
+            color: var(--headline);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .price-tag {
+            display: inline-block;
+            background-color: rgba(127, 90, 240, 0.1);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .testimonials {
+            position: relative;
+            padding: 100px 0;
+            overflow: hidden;
+        }
+        
+        .testimonial-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .testimonial {
+            background-color: var(--card);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .quote {
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.2;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        
+        .testimonial p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #dfe6e9;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .author-info h4 {
+            color: var(--headline);
+            margin-bottom: 5px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 120px 0;
+            background-color: var(--card);
+            border-radius: 30px;
+            margin: 40px 0;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            color: var(--headline);
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            background-color: var(--card);
+            color: var(--headline);
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            border-radius: 15px;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        .faq-answer {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s, padding 0.5s;
+            background-color: rgba(17, 17, 17, 0.5);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        
+        .faq-answer-content {
+            padding: 20px;
+        }
+        
+        .faq-item.active .faq-question {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
+            padding: 20px;
+        }
+        
+        footer {
+            background-color: var(--card);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--headline);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo span {
+            color: var(--primary);
+            margin-left: 5px;
+        }
+        
+        .footer-text {
+            margin-bottom: 20px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(127, 90, 240, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary);
+            color: var(--button-text);
+            transform: translateY(-5px);
+        }
+        
+        .footer-heading {
+            color: var(--headline);
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary);
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: var(--paragraph);
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-copyright {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(148, 161, 178, 0.1);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--headline);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .floating-emoji {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.5;
+            animation: float 15s linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .vibe-switch {
+            background-color: var(--card);
+            border-radius: 50px;
+            padding: 5px;
+            display: flex;
+            width: 200px;
+            margin: 0 auto 40px;
+        }
+        
+        .vibe-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--paragraph);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .vibe-option.active {
+            background-color: var(--primary);
+            color: var(--button-text);
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--background);
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+                gap: 20px;
+                transform: translateY(-150%);
+                transition: transform 0.3s;
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .section-heading h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">Bob<span>.</span></div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how">How It Works</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <button class="cta-button"><i class="fab fa-telegram"></i> Start with Bob</button>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Life on <span class="gradient-text">Easy Mode</span> with Bob</h1>
+            <p>Your personal concierge in your pocket. Bob handles the annoying stuff so you can focus on what matters. Restaurant bookings, event tickets, gift shopping - we've got you covered.</p>
+            <div class="hero-buttons">
+                <button class="cta-button"><i class="fab fa-telegram"></i> Chat with Bob</button>
+                <button class="secondary-button"><i class="fas fa-play"></i> See How It Works</button>
+            </div>
+            
+            <div class="vibe-switch">
+                <div class="vibe-option active">Chill Vibes</div>
+                <div class="vibe-option">Power User</div>
+            </div>
+        </div>
+        
+        <!-- Floating emoji background -->
+        <div class="emoji-bg">
+            <span class="floating-emoji" style="left: 10%; animation-delay: 0s;">🎮</span>
+            <span class="floating-emoji" style="left: 20%; animation-delay: 3s;">🌮</span>
+            <span class="floating-emoji" style="left: 30%; animation-delay: 7s;">🎟️</span>
+            <span class="floating-emoji" style="left: 40%; animation-delay: 5s;">🛍️</span>
+            <span class="floating-emoji" style="left: 60%; animation-delay: 8s;">🎂</span>
+            <span class="floating-emoji" style="left: 70%; animation-delay: 2s;">🚗</span>
+            <span class="floating-emoji" style="left: 80%; animation-delay: 6s;">🎁</span>
+            <span class="floating-emoji" style="left: 90%; animation-delay: 4s;">✨</span>
+        </div>
+    </section>
+    
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Why Bob is the GOAT</h2>
+                <p>Bob isn't just another bot - it's your personal vibe coordinator that makes adulting way less annoying.</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Zero Effort, Maximum Results</h3>
+                    <p>Just tell Bob what you need in normal human language. No forms, no apps to download, no account setup.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Time = Saved</h3>
+                    <p>Stop wasting hours on hold or scrolling through options. Bob does the tedious stuff while you do literally anything else.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Actual Humans When Needed</h3>
+                    <p>Bob's AI is elite, but real humans jump in for the complicated stuff. The best of both worlds.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Track Everything Live</h3>
+                    <p>Watch your requests happen in real-time with Bob's tracking page. No more "did they forget about me?" anxiety.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Always in Your Pocket</h3>
+                    <p>Bob lives in Telegram, so you can chat from anywhere, anytime. No new apps cluttering your phone.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Weirdly Specific Requests? Perfect</h3>
+                    <p>The more detailed your request, the better. Bob thrives on the stuff that would be awkward to ask for elsewhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="how">
+        <div class="container">
+            <div class="section-heading">
+                <h2>How It Works</h2>
+                <p>Using Bob is literally easier than ordering pizza. Here's the whole process:</p>
+            </div>
+            
+            <div class="how-it-works">
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Chat with Bob</h3>
+                        <p>Message Bob on Telegram and tell it what you need in your own words.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Bob Gathers Details</h3>
+                        <p>Bob asks a few quick questions to make sure it gets everything right.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Track Your Request</h3>
+                        <p>Get a link to your personal tracking page with real-time updates.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Task Complete!</h3>
+                        <p>Bob notifies you when your request is fulfilled. That's it!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="examples">
+        <div class="container">
+            <div class="section-heading">
+                <h2>What Can Bob Do?</h2>
+                <p>Almost anything you'd rather not do yourself. Here are some examples:</p>
+            </div>
+            
+            <div class="examples">
+                <div class="example-card">
+                    <h3>Restaurant Reservations</h3>
+                    <p>"Hey Bob, can you get me a table for 4 at a nice sushi place near Covent Garden this Friday around 7pm? Vibes should be chill but not too casual."</p>
+                    <div class="price-tag">12.5% service fee</div>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Event Tickets</h3>
+                    <p>"Bob, I need 2 tickets to see The 1975 at O2 next month. Willing to spend up to £150 each, prefer standing or good seated view."</p>
+                    <div class="price-tag">12.5% service fee</div>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Gift Shopping</h3>
+                    <p>"I need a birthday gift for my girlfriend who's into vintage fashion, astrology, and indie music. Budget is £80. Can you find something unique that ships to London by next Tuesday?"</p>
+                    <div class="price-tag">12.5% service fee</div>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Food Delivery</h3>
+                    <p>"Bob, can you order me pad thai (no peanuts), spring rolls, and a coconut smoothie from Thai Delight? Deliver to my apartment ASAP."</p>
+                    <div class="price-tag">12.5% service fee</div>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Travel Planning</h3>
+                    <p>"I need a weekend getaway to somewhere with a beach that won't break the bank. Two people, leaving from London, 3 nights in early March. Budget £500 all-in."</p>
+                    <div class="price-tag">12.5% service fee</div>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Hard-to-Find Items</h3>
+                    <p>"Bob, I'm trying to find the limited edition green vinyl release of Tyler the Creator's 'Igor'. Willing to pay up to £120 if you can track one down."</p>
+                    <div class="price-tag">12.5% service fee</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="pricing">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Simple Pricing</h2>
+                <p>No hidden fees, no subscription needed. You only pay when Bob actually helps you.</p>
+            </div>
+            
+            <div class="feature-card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 20px;">Just 12.5% Service Fee</h3>
+                <p style="font-size: 1.2rem; margin-bottom: 30px;">That's it. If your concert tickets cost £100, Bob's fee is £12.50. No minimum charge, no monthly fees, no surprises.</p>
+                <button class="cta-button" style="font-size: 1.2rem; padding: 15px 30px;">Start Saving Time</button>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="faq">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Got Questions?</h2>
+                <p>Here are the things people usually ask about:</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What's the difference between Bob and other concierge services? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Bob combines AI with human expertise, lives right in your Telegram, has no monthly fees, and shows you actual progress in real-time. Most other services are either fully human (expensive), fully AI (limited), or require subscriptions.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How much does Bob cost? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Just a 12.5% service fee on what you actually spend. No subscription, no minimums, no hidden fees. If your task doesn't require a purchase, we'll quote you a fair price based on complexity.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I pay for stuff? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            When a task requires payment, Bob sends you a secure payment link. You can pay with any major credit/debit card. Your payment info is never stored or shared with third parties beyond the payment processor.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can Bob handle super specific or unusual requests? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolutely! The weirder or more specific your request, the more Bob shines. From tracking down discontinued sneakers to finding a barber who specializes in anime-inspired haircuts, we've got you.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How fast does Bob complete tasks? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            It depends on the task. Simple restaurant bookings might take minutes, while tracking down rare items could take days. Bob always keeps you updated in real-time so you're never left wondering what's happening.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="testimonials">
+        <div class="container">
+            <div class="section-heading">
+                <h2>The Vibe Check</h2>
+                <p>Don't just take our word for it - here's what actual humans are saying about Bob:</p>
+            </div>
+            
+            <div class="testimonial-container">
+                <div class="testimonial">
+                    <div class="quote"><i class="fas fa-quote-left"></i></div>
+                    <p>Bob literally saved my relationship. Forgot our anniversary and Bob managed to get a last-minute reservation at this impossible restaurant AND organized flowers to arrive beforehand. No drama, no stress.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Jamie K.</h4>
+                            <p>London</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="quote"><i class="fas fa-quote-left"></i></div>
+                    <p>I'm that person who hates making phone calls and dealing with customer service. Bob has been life-changing - it handles all the awkward conversations and follows up when things go wrong. Worth every penny.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Alex T.</h4>
+                            <p>Manchester</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="quote"><i class="fas fa-quote-left"></i></div>
+                    <p>Bob got me tickets to a sold-out show that I thought was impossible. Plus it found this super rare vinyl I'd been hunting for months. No cap, this thing is GOATED.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Jordan M.</h4>
+                            <p>Bristol</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to <span class="gradient-text">Level Up</span> Your Life?</h2>
+            <p>Join thousands of people who are doing less and living more with Bob.</p>
+            <button class="cta-button" style="font-size: 1.2rem; padding: 15px 30px;"><i class="fab fa-telegram"></i> Chat with Bob Now</button>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div>
+                    <div class="footer-logo">Bob<span>.</span></div>
+                    <p class="footer-text">Your personal concierge in your pocket. Life on easy mode.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how">How It Works</a></li>
+                        <li><a href="#examples">Examples</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-heading">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">@BobSupport</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-copyright">
+                &copy; 2025 Bob Concierge. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Vibe Switch Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const vibeOptions = document.querySelectorAll('.vibe-option');
+            
+            vibeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    vibeOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Update UI based on selected vibe
+                    if (this.textContent === 'Chill Vibes') {
+                        document.documentElement.style.setProperty('--primary', '#7F5AF0');
+                        document.documentElement.style.setProperty('--secondary', '#2CB67D');
+                        document.documentElement.style.setProperty('--accent', '#FF8E3C');
+                        document.body.style.fontFamily = "'Montserrat', 'Segoe UI', sans-serif";
+                    } else {
+                        // Power User mode
+                        document.documentElement.style.setProperty('--primary', '#2563EB');
+                        document.documentElement.style.setProperty('--secondary', '#10B981');
+                        document.documentElement.style.setProperty('--accent', '#F59E0B');
+                        document.body.style.fontFamily = "'IBM Plex Mono', monospace";
+                    }
+                });
+            });
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+                        '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                });
+            }
+            
+            // FAQ functionality
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', function() {
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
